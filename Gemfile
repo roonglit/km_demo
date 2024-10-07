@@ -57,3 +57,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "langchainrb_rails", "~> 0.1.12"
+gem "neighbor"
+gem "ruby-openai"
