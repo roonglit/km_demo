@@ -27,6 +27,7 @@
           </button>
         </div>
       <% end %>
+      <%= button_to 'Sign in with Keycloak', user_keycloakopenid_omniauth_authorize_path, method: :post, data: {turbo: false} %>
     </header>
     <%= yield %>
   </body>

@@ -63,3 +63,9 @@ gem "neighbor"
 gem "ruby-openai"
 
 gem "simple_form", "~> 5.3"
+
+gem "devise", "~> 4.9"
+
+gem "omniauth-rails_csrf_protection", "~> 1.0"
+
+gem "omniauth-keycloak", "~> 1.5"
