@@ -1,0 +1,32 @@
+<li class="flex list-none items-center overflow-hidden whitespace-nowrap">
+  <%= link_to path, class: [
+    # default
+    'mb-2 p-3',
+    'flex items-center',
+    'cursor-pointer',
+    'overflow-hidden',
+    'rounded-xl',
+    'border',
+    'text-zinc-500',
+    'hover:text-zinc-950',
+    'grow',
+    # active
+    {
+      'border-zinc-300 text-zinc-950 dark:border-zinc-800 dark:text-zinc-100': current_page?(path),
+    },
+    # inactive
+    {
+      'border-transparent': !current_page?(path),
+    }, 
+  ] do %>
+    <!-- NavIcon -->
+    <%= icon 'hero_document_text', class: 'w-6 flex-none text-2xl', data: {'admin-layout-target': 'navIcon'} %>
+    <!-- NavItemContent -->
+    <div
+      class="flex w-full items-center justify-between truncate"
+      data-admin-layout-target="navItemContent"
+      >
+      <div><%= text %></div>
+    </div>
+  <% end %>
+</li>

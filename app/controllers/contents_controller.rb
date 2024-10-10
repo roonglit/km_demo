@@ -1,9 +1,13 @@
 class ContentsController < ApplicationController
-  before_action :set_content, only: %i[ show edit update destroy ]
+  before_action :set_content, only: %i[ show ]
 
   # GET /contents or /contents.json
   def index
-    @contents = Content.all
+    if params[:search]
+      @contents = Content.search(params[:search])
+    else
+      @contents = Content.all
+    end
   end
 
   # GET /contents/1 or /contents/1.json

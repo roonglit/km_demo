@@ -1,0 +1,11 @@
+<%= simple_form_for([:admin, @article]) do |f| %>
+
+  <%= render "components/layouts/subheader/subheader" do %>
+    <%= link_to "< Back", admin_articles_path %>
+    <%= button_tag "Save", type: :submit, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' %>
+  <% end %>
+
+  <%= render "components/layouts/container/container" do %>
+    <%= render "form", article: @article, f: f %>
+  <% end %>
+<% end %>

@@ -1,0 +1,24 @@
+<%= content_tag :aside, class: [
+  'fixed bottom-0 top-0 z-30 md:z-20',
+  'flex flex-col',
+  'border-zinc-300/25 bg-white',
+  'py-6',
+  'border-r',
+  'max-md:w-[20rem] max-md:shadow-2xl',
+  'md:w-[20rem]',
+  'transition-all duration-300',
+], data: {'admin-layout-target': 'aside'} do %>
+  <%= render 'components/layouts/aside/aside_head' do %>
+    <button
+      class="flex h-12 w-12 items-center justify-center"
+      data-action="click->admin-layout#toggle"
+    >
+      <%= icon 'hero_bars3', class: 'text-2xl' %>
+    </button>
+  <% end %>
+  <%= render 'components/layouts/aside/aside_body' do %>
+    <%= nav do %>
+      <%= nav_item icon: 'hero_document_text', text: 'Articles', path: admin_articles_path %>
+    <% end %>
+  <% end %>
+<% end %>

@@ -61,3 +61,5 @@ end
 gem "langchainrb_rails", "~> 0.1.12"
 gem "neighbor"
 gem "ruby-openai"
+
+gem "simple_form", "~> 5.3"

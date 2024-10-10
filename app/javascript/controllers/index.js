@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
+import AdminLayoutController from "./admin_layout_controller"
+application.register("admin-layout", AdminLayoutController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)

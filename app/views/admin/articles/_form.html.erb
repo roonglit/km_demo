@@ -1,0 +1,19 @@
+<%= render "components/ui/card" do %>
+  <%= f.fields_for :content do |content| %>
+    <%= content.input :title %>
+    <%= content.input :body %>
+  <% end %>
+<% end %>
+
+
+<% if article.errors.any? %>
+  <div style="color: red">
+    <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+    <ul>
+      <% article.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

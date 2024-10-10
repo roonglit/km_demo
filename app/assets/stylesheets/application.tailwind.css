@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --header-height: 0px;
+    --subheader-height: 0px;
+    font-size: 13px;
+  }
+
+  html,
+  body {
+    @apply flex h-full flex-col scroll-smooth 
+  }
+}
+
+@layer components {
+  .svg-icon {
+    @apply w-[1em] h-[1em];
+  }
+
+  .input {
+    @apply mb-4;
+  }
+}

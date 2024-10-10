@@ -17,8 +17,15 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-gradient-to-r from-violet-100 to-violet-200">
-    <p>Admin</p>
-    <%= yield %>
+  <body>
+    <div class="flex grow flex-col" data-controller="admin-layout">
+      <%= render "components/layouts/aside/aside" %>
+      <%= render "components/layouts/wrapper/wrapper" do %>
+        <%= render "components/layouts/header/header" %>
+        <main>
+          <%= yield %>
+        </main>
+      <% end %>
+    </div>
   </body>
 </html>

@@ -18,6 +18,16 @@
   </head>
 
   <body class="bg-gradient-to-r from-violet-100 to-violet-200">
+    <header class="bg-white">
+      <%= form_with url: contents_path, method: :get do %>
+        <div class='container mx-auto p-2 flex'>
+          <%= text_field_tag :search, params[:search], class: "border flex-grow p-2" %>
+          <button type: "submit", class: "btn">
+            Search
+          </button>
+        </div>
+      <% end %>
+    </header>
     <%= yield %>
   </body>
 </html>

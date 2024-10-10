@@ -1,0 +1,25 @@
+<% content_for :title, "Articles" %>
+
+<%= render "components/layouts/subheader/subheader" do %>
+  <%= link_to new_admin_article_path do %>
+    <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>New Article</button>
+  <% end %>
+<% end %>
+
+<%= render "components/layouts/container/container" do %>
+  <p class='text-green'><%= notice %></p>
+  <%= render "components/ui/card" do %>
+    <div id="articles">
+      <% @articles.each do |article| %>
+        <p>
+          <%= article.title %>
+          <%= link_to "Show this article", [:admin, article] %>
+        </p>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+
+
+
+
