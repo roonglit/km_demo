@@ -3,4 +3,6 @@ class Article < ApplicationRecord
   accepts_nested_attributes_for :content
 
   delegate :title, :body, to: :content
+
+  has_many_attached :files
 end

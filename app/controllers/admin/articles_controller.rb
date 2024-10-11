@@ -67,7 +67,7 @@ module Admin
 
       # Only allow a list of trusted parameters through.
       def article_params
-        params.require(:article).permit(content_attributes: [:title, :body])
+        params.require(:article).permit(files: [], content_attributes: [:title, :body])
       end
   end
 end
