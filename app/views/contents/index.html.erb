@@ -1,14 +1,22 @@
-<p style="color: green"><%= notice %></p>
-
 <% content_for :title, "Contents" %>
 
-<h1>Contents</h1>
-
-<div id="contents">
-  <% @contents.each do |content| %>
-    <%= render content %>
-    <p>
-      <%= link_to "Show this content", content %>
-    </p>
-  <% end %>
+<div id="contents" class="container mx-auto p-4">
+  <div class="grid grid-cols-12 gap-4">
+    <% if notice %>
+      <div class="col-span-12">  
+        <%= render "components/ui/card" do %>
+          <div class="p-4">
+            <%= notice %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <% @contents.each do |content| %>
+      <div class="col-span-12 md:col-span-4 xl:col-span-3">
+        <%= render "components/ui/card" do %>
+          <%= render content %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

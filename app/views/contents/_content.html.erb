@@ -1,22 +1,11 @@
-<div id="<%= dom_id content %>">
+<div id="<%= dom_id content %>" class="p-4">
+  <!-- image placeholder -->
+  <div class="h-40 bg-gray-300 mb-4"></div>
+
   <p>
-    <strong>Title:</strong>
     <%= content.title %>
   </p>
-
   <p>
-    <strong>Body:</strong>
     <%= content.body %>
   </p>
-
-  <p>
-    <strong>Content type:</strong>
-    <%= content.content_type %>
-  </p>
-
-  <p>
-    <strong>Status:</strong>
-    <%= content.status %>
-  </p>
-
 </div>

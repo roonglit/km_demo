@@ -14,7 +14,15 @@ module Users
     end
 
     def keycloakopenid
-      p request.env["omniauth.auth"]
+      # p request.env["omniauth.auth"]
+
+      @user = User.from_keycloak_openid(request.env["omniauth.auth"])
+      @user.update(
+        token: request.env["omniauth.auth"]["credentials"]["token"],
+        refresh_token: request.env["omniauth.auth"]["credentials"]["refresh_token"],
+        token_expires_at: Time.at(request.env["omniauth.auth"]["credentials"]["expires_at"])
+      )
+      sign_in_and_redirect @user, event: :authentication
     end
 
     def failure

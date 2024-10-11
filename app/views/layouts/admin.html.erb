@@ -21,7 +21,9 @@
     <div class="flex grow flex-col" data-controller="admin-layout">
       <%= render "components/layouts/aside/aside" %>
       <%= render "components/layouts/wrapper/wrapper" do %>
-        <%= render "components/layouts/header/header" %>
+        <%= render "components/layouts/header/header" do %>
+          <%= render "components/layouts/header/header_left" %>
+        <% end %>
         <main>
           <%= yield %>
         </main>

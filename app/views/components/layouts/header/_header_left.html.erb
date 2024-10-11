@@ -1,0 +1,12 @@
+<!-- HeaderLeft -->
+<%= content_tag :div, class: [
+  'flex items-denter gap-4',
+  'md:mr-auto'
+] do %>
+  <button
+    class="flex h-12 w-12 items-center justify-center md:hidden"
+    data-action="click->admin-layout#toggle"
+  >
+    <%= icon 'hero_bars3', class: 'text-2xl' %>
+  </button>
+<% end %>
