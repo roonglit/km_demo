@@ -5,6 +5,7 @@ class TesseractClient
   base_uri 'http://localhost:5000'
 
   def initialize(url)
+    Rails.logger.info "TesseractClient initialized with url: #{url}"
     self.class.base_uri url
   end
 
