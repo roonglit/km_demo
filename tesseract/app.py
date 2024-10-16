@@ -4,8 +4,12 @@ import pytesseract
 import os
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
+import logging
 
 app = Flask(__name__)
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
 # Dictionary for simple Unicode to Thai character mapping
 unicode_to_thai = {
@@ -71,6 +75,7 @@ unicode_to_thai = {
 
 # Function to process each page
 def process_page(page_number, page):
+    logging.info(f"Processing page {page_number}")
     # Save the page as an image
     page_path = f"/tmp/page_{page_number}.png"
     page.save(page_path, 'PNG')
@@ -90,11 +95,13 @@ def process_page(page_number, page):
     os.remove(page_path)
     os.remove(preprocessed_path)
 
+    logging.info(f"Finished processing page {page_number}")
     return f"\n--- Page {page_number} ---\n{text}"
 
 @app.route('/extract_text', methods=['POST'])
 def extract_text():
     if 'pdf' not in request.files:
+        logging.error("No PDF file uploaded")
         return Response("No PDF file uploaded", status=400)
 
     file = request.files['pdf']
@@ -102,8 +109,10 @@ def extract_text():
     file.save(file_path)
 
     try:
+        logging.info("Starting PDF to image conversion")
         # Convert PDF to images
         pages = convert_from_path(file_path, dpi=150)
+        logging.info("PDF to image conversion completed")
 
         extracted_text = ""
         with ThreadPoolExecutor() as executor:
@@ -111,14 +120,17 @@ def extract_text():
 
         extracted_text = "".join(results)
 
+        logging.info("Text extraction completed")
         return Response(extracted_text, content_type='text/plain; charset=utf-8')
 
     except Exception as e:
+        logging.error(f"Error occurred: {str(e)}")
         return Response(f"Error: {str(e)}", status=500)
 
     finally:
         # Clean up the saved file
         os.remove(file_path)
+        logging.info("Cleaned up temporary files")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
