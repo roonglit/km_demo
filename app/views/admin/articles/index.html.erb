@@ -6,19 +6,32 @@
   <% end %>
 <% end %>
 
-<%= render "components/layouts/container/container" do %>
-  <p class='text-green'><%= notice %></p>
-  <%= render "components/ui/card" do %>
-    <div id="articles">
-      <% @articles.each do |article| %>
-        <p>
-          <%= article.title %>
-          <%= link_to "Show this article", [:admin, article] %>
-        </p>
+<div class='bg-zinc-200 p-4'>
+  <%= container do %>
+    <p class='text-green'><%= notice %></p>
+    <%= card do %>
+      <!-- Card Header -->
+      <%= card_body class: 'overflow-auto' do %>
+        <%= table do %>
+          <tr>
+            <%= th do %>Title<% end %>
+            <%= th do %>Actions<% end %>
+          </tr>
+          <% @articles.each do |article| %>
+            <tr>
+              <td><%= article.title %></td>
+              <td>
+                <%= link_to "Show", [:admin, article] %>
+                <%= link_to "Edit", edit_admin_article_path(article) %>
+                <%= button_to "Delete", [:admin, article], method: :delete, data: { confirm: "Are you sure?" } %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
       <% end %>
-    </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>
 
 
 

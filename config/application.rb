@@ -26,6 +26,27 @@ module Km
 
     config.autoload_paths << Rails.root.join('lib')
 
+    config.after_initialize do
+      config.active_storage.analyzers.prepend PdfAnalyzer
+    end
+
+    # config.to_prepare do
+    #   class ActiveStorage::Blob
+    #     def analyze
+    #       update! metadata: metadata.merge(extract_metadata_via_analyzer)
+    #       p "overriden analyze method"
+    #       p "blob_id: #{id}"
+
+    #       # Find the associated article and update its search_data
+    #       ActiveStorage::Attachment.where(blob_id: id).each do |attachment|
+    #         if attachment.record.is_a?(Article)
+    #           attachment.record.file_analyzed_callback(self.metadata)
+    #         end
+    #       end
+    #     end
+    #   end
+    # end
+
     credentials.config.each do |key, value|
       if key.to_s == Rails.env
         value.each do |env_key, env_value|

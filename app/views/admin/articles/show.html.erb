@@ -1,6 +1,18 @@
+<% content_for :title, "Show article" %>
+
+<%= subheader do %>
+  <%= link_to "< Back", admin_articles_path %>
+<% end %>
+
+<div class="bg-zinc-200 p4">
+  <%= container do %>
+    <%= render @article %>
+  <% end %>
+</div>
+
 <p style="color: green"><%= notice %></p>
 
-<%= render @article %>
+
 
 <div>
   <%= link_to "Edit this article", edit_admin_article_path(@article) %> |

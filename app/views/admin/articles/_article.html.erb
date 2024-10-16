@@ -1,3 +1,27 @@
-<div id="<%= dom_id article %>">
-  <%= article.title %>
-</div>
+<%= card do %>
+  <%= card_body do %>
+    <div id="<%= dom_id article %>">
+      <h2>Title</h2>
+      <%= article.title %>
+      <h2>Body</h2>
+      <%= article.body %>
+      <h2>Search Data</h2>
+      <%= article.search_data %>
+      <h2>Files</h2>
+      <ul>
+        <% article.files.each do |file| %>
+          <li>
+            <% if file.representable? %>
+              <%= image_tag file.representation(resize_to_limit: [100, 100]) %>
+            <% else %>
+              <%= link_to rails_blob_path(file, disposition: "attachment"), class: "flex flex-row items-center" do %>
+                <%= icon "hero_document_arrow_down", class: 'mr-2' %>
+                <%= file.filename %>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

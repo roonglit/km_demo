@@ -33,5 +33,12 @@ services:
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
 
+  tesseract:
+    build:
+      context: ./tesseract
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+
 volumes:
   postgres:

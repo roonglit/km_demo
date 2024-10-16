@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   namespace :admin do
-    resources :contents
     resources :articles
+
+    root to: "articles#index"
   end
   resources :contents, only: %i[ index show ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -1,9 +1,11 @@
-<%= render "components/ui/card" do %>
-  <%= f.fields_for :content do |content| %>
-    <%= content.input :title %>
-    <%= content.input :body %>
+<%= card do %>
+  <%= card_body do %>
+    <%= f.fields_for :content do |content| %>
+      <%= content.input :title %>
+      <%= content.input :body %>
+    <% end %>
+    <%= f.file_field :files, multiple: true %>
   <% end %>
-  <%= f.file_field :files, multiple: true %>
 <% end %>
 
 

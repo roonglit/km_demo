@@ -4,7 +4,7 @@
   <div class="grid grid-cols-12 gap-4">
     <% if notice %>
       <div class="col-span-12">  
-        <%= render "components/ui/card" do %>
+        <%= card do %>
           <div class="p-4">
             <%= notice %>
           </div>
@@ -13,7 +13,7 @@
     <% end %>
     <% @contents.each do |content| %>
       <div class="col-span-12 md:col-span-4 xl:col-span-3">
-        <%= render "components/ui/card" do %>
+        <%= card do %>
           <%= render content %>
         <% end %>
       </div>

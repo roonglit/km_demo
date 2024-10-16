@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_11_020613) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_15_122443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "vector"
@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_11_020613) do
   create_table "articles", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "files_analyzed_count", default: 0
   end
 
   create_table "chunks", force: :cascade do |t|
@@ -60,12 +61,12 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_11_020613) do
   create_table "contents", force: :cascade do |t|
     t.string "title"
     t.text "body"
-    t.integer "content_type"
+    t.text "search_data"
     t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "contentable_type", null: false
     t.bigint "contentable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["contentable_type", "contentable_id"], name: "index_contents_on_contentable"
   end
 

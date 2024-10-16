@@ -54,7 +54,7 @@ module Admin
       @article.destroy!
 
       respond_to do |format|
-        format.html { redirect_to articles_path, status: :see_other, notice: "Article was successfully destroyed." }
+        format.html { redirect_to admin_articles_path, status: :see_other, notice: "Article was successfully destroyed." }
         format.json { head :no_content }
       end
     end
@@ -67,7 +67,10 @@ module Admin
 
       # Only allow a list of trusted parameters through.
       def article_params
-        params.require(:article).permit(files: [], content_attributes: [:title, :body])
+        permitted_params = params.require(:article).permit(files: [], content_attributes: [:title, :body, :search_data])
+        permitted_params[:files].reject!(&:blank?)
+        permitted_params[:content_attributes][:search_data] = ""
+        permitted_params
       end
   end
 end
