@@ -3,6 +3,7 @@ from pdf2image import convert_from_path
 import pytesseract
 import os
 import subprocess
+from concurrent.futures import ThreadPoolExecutor
 
 app = Flask(__name__)
 
@@ -68,6 +69,29 @@ unicode_to_thai = {
     "\u0e3a": "ฺ",
 }
 
+# Function to process each page
+def process_page(page_number, page):
+    # Save the page as an image
+    page_path = f"/tmp/page_{page_number}.png"
+    page.save(page_path, 'PNG')
+
+    # Preprocess the image using ImageMagick
+    preprocessed_path = f"/tmp/preprocessed_{page_number}.png"
+    subprocess.run(["convert", page_path, "-resize", "150%", "-threshold", "50%", preprocessed_path])
+
+    # Use OCR on the preprocessed image
+    text = pytesseract.image_to_string(preprocessed_path, lang='tha', config='--psm 6')
+
+    # Replace Unicode escape sequences with Thai characters
+    for unicode_seq, thai_char in unicode_to_thai.items():
+        text = text.replace(unicode_seq, thai_char)
+
+    # Clean up the saved files
+    os.remove(page_path)
+    os.remove(preprocessed_path)
+
+    return f"\n--- Page {page_number} ---\n{text}"
+
 @app.route('/extract_text', methods=['POST'])
 def extract_text():
     if 'pdf' not in request.files:
@@ -79,26 +103,13 @@ def extract_text():
 
     try:
         # Convert PDF to images
-        pages = convert_from_path(file_path, dpi=300)
+        pages = convert_from_path(file_path, dpi=150)
 
         extracted_text = ""
-        for page_number, page in enumerate(pages, start=1):
-            # Save the page as an image
-            page_path = f"/tmp/page_{page_number}.png"
-            page.save(page_path, 'PNG')
+        with ThreadPoolExecutor() as executor:
+            results = list(executor.map(lambda p: process_page(*p), enumerate(pages, start=1)))
 
-            # Preprocess the image using ImageMagick
-            preprocessed_path = f"/tmp/preprocessed_{page_number}.png"
-            subprocess.run(["convert", page_path, "-resize", "200%", "-threshold", "50%", preprocessed_path])
-
-            # Use OCR on the preprocessed image
-            text = pytesseract.image_to_string(preprocessed_path, lang='tha', config='--psm 6')
-
-            # Replace Unicode escape sequences with Thai characters
-            for unicode_seq, thai_char in unicode_to_thai.items():
-                text = text.replace(unicode_seq, thai_char)
-
-            extracted_text += f"\n--- Page {page_number} ---\n{text}"
+        extracted_text = "".join(results)
 
         return Response(extracted_text, content_type='text/plain; charset=utf-8')
 
@@ -106,11 +117,8 @@ def extract_text():
         return Response(f"Error: {str(e)}", status=500)
 
     finally:
-        # Clean up the saved files
+        # Clean up the saved file
         os.remove(file_path)
-        for page_number in range(1, len(pages) + 1):
-            os.remove(f"/tmp/page_{page_number}.png")
-            os.remove(f"/tmp/preprocessed_{page_number}.png")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
