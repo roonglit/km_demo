@@ -74,3 +74,5 @@ gem "omniauth-keycloak", "~> 1.5"
 gem "pdf-reader", "~> 2.12"
 gem "image_processing", "~> 1.2"
 gem "httparty", "~> 0.22.0"
+
+gem "pdftotext", "~> 0.2.1"

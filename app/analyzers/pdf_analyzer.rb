@@ -7,9 +7,7 @@ class PdfAnalyzer < ActiveStorage::Analyzer
 
   def metadata
     download_blob_to_tempfile do |file|
-      reader = PDF::Reader.new(file.path)
-      # if result contains no text or only \n characters, it's probably a scanned document
-      result = reader.pages.map(&:text).join.gsub("\n", "")
+      result = pdftotext(file.path)
       
       if result.empty?
         # we need to send the document to the OCR service here to save time downloading the file.
@@ -23,5 +21,15 @@ class PdfAnalyzer < ActiveStorage::Analyzer
 
       { text: result }
     end
+  end
+
+  def pdf_reader(file_path)
+    reader = PDF::Reader.new(file_path)
+    result = reader.pages.map(&:text).join.gsub("\n", "")
+  end
+
+  def pdftotext(file_path)
+    pages = Pdftotext.pages(file_path, enc: 'UTF-8')
+    pages.map(&:text).join.gsub("\n", "")
   end
 end

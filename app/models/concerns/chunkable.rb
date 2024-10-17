@@ -25,7 +25,8 @@ module Chunkable
   def create_chunks
     chunks.destroy_all
     generate_chunks.each do |chunk|
-      chunks.create!(chunk)
+      new_chunk = chunks.create!(chunk)
+      UpdateEmbeddingToChunkJob.perform_later(new_chunk.id)
     end
     log_chunk_creation
   end
@@ -40,8 +41,7 @@ module Chunkable
       separators: chunkable_separators
     ).chunks.map do |chunk|
       {
-        text: chunk.text,
-        embedding: open_ai.embed(text: chunk.text).embedding
+        text: chunk.text
       }
     end
   end
