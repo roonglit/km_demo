@@ -110,13 +110,13 @@ def process_pdf_in_background(file_path, callback_url):
 
         logging.info("Text extraction completed")
         # Send the extracted text to the callback URL
-        response = requests.post(callback_url, json={"extracted_text": extracted_text})
+        response = requests.post(callback_url, json={"extracted_text": extracted_text}, verify=False)
         logging.info(f"Callback response status: {response.status_code}")
 
     except Exception as e:
         logging.error(f"Error occurred: {str(e)}")
         # Send the error message to the callback URL
-        requests.post(callback_url, json={"error": str(e)})
+        requests.post(callback_url, json={"error": str(e)}, verify=False)
 
     finally:
         # Clean up the saved file
