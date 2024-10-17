@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 class PdfAnalyzer < ActiveStorage::Analyzer
+  DUPLICATES = [
+    'ัั', # ั
+    '้้', # ้
+    '์์', # ์ 
+    'ำำ', # ำ
+    'ิิ', #  ิ
+    'ีี', #  ี
+    'าา', # า
+    '่่', # ่
+    'ุุ', # ุ
+    'ูู', # ู
+    '๊๊', # ๊
+    '๋๋', # ๋
+    'ึึ', # ึ
+    'ืื', # ื  
+  ]
+
   def self.accept?(blob)
     blob.content_type == "application/pdf"
   end
@@ -25,11 +42,25 @@ class PdfAnalyzer < ActiveStorage::Analyzer
 
   def pdf_reader(file_path)
     reader = PDF::Reader.new(file_path)
-    result = reader.pages.map(&:text).join.gsub("\n", "")
+    result = reader.pages.map(&:text).join
+      .gsub("\n", "")
+      .gsub(/[^ก-๙a-zA-Z0-9\s\.\,\:\(\)\-]/, "")
+
+    DUPLICATES.each do |duplicate|
+      result = result.gsub(duplicate, duplicate[0])
+    end
+    result
   end
 
   def pdftotext(file_path)
     pages = Pdftotext.pages(file_path, enc: 'UTF-8')
-    pages.map(&:text).join.gsub("\n", "")
+    result = pages.map(&:text).join
+      .gsub("\n", "")
+      .gsub(/[^ก-๙a-zA-Z0-9\s\.\,\:\(\)\-]/, "")
+
+    DUPLICATES.each do |duplicate|
+      result = result.gsub(duplicate, duplicate[0])
+    end
+    result
   end
 end
