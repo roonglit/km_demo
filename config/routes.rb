@@ -5,6 +5,18 @@ Rails.application.routes.draw do
 
     root to: "articles#index"
   end
+
+  namespace :active_storage do
+    resources :blobs, only: [] do
+      post :pdf_callback, on: :member
+    end
+  end
+
+  namespace :rails do
+    namespace :active_storage do
+      post "/blobs/:id/pdf_callback" => "blobs#pdf_callback", as: :blob_pdf_callback
+    end
+  end
   resources :contents, only: %i[ index show ]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

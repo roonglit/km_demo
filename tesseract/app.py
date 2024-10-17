@@ -4,6 +4,8 @@ import pytesseract
 import os
 import subprocess
 import logging
+import threading
+import requests
 
 app = Flask(__name__)
 
@@ -72,16 +74,7 @@ unicode_to_thai = {
     "\u0e3a": "ฺ",
 }
 
-@app.route('/extract_text', methods=['POST'])
-def extract_text():
-    if 'pdf' not in request.files:
-        logging.error("No PDF file uploaded")
-        return Response("No PDF file uploaded", status=400)
-
-    file = request.files['pdf']
-    file_path = "/tmp/uploaded.pdf"
-    file.save(file_path)
-
+def process_pdf_in_background(file_path, callback_url):
     try:
         logging.info("Starting PDF to image conversion")
         # Convert PDF to images
@@ -116,16 +109,43 @@ def extract_text():
             logging.info(f"Cleaned up temporary files for page {page_number}")
 
         logging.info("Text extraction completed")
-        return Response(extracted_text, content_type='text/plain; charset=utf-8')
+        # Send the extracted text to the callback URL
+        response = requests.post(callback_url, json={"extracted_text": extracted_text})
+        logging.info(f"Callback response status: {response.status_code}")
 
     except Exception as e:
         logging.error(f"Error occurred: {str(e)}")
-        return Response(f"Error: {str(e)}", status=500)
+        # Send the error message to the callback URL
+        requests.post(callback_url, json={"error": str(e)})
 
     finally:
         # Clean up the saved file
         os.remove(file_path)
         logging.info("Cleaned up temporary files")
 
+@app.route('/extract_text', methods=['POST'])
+def extract_text():
+    if 'pdf' not in request.files or 'callback_url' not in request.form:
+        logging.error("Missing PDF file or callback URL")
+        return Response("Missing PDF file or callback URL", status=400)
+
+    file = request.files['pdf']
+    callback_url = request.form['callback_url']
+    file_path = "/tmp/uploaded.pdf"
+    file.save(file_path)
+
+    # Start background job for processing PDF
+    threading.Thread(target=process_pdf_in_background, args=(file_path, callback_url)).start()
+
+    logging.info("Acknowledging request and starting background processing")
+    return Response("Request acknowledged. Processing will continue in the background.", status=200)
+
 if __name__ == '__main__':
+    # Ensure the 'requests' module is installed
+    try:
+        import requests
+    except ModuleNotFoundError:
+        import subprocess
+        subprocess.check_call(["python", "-m", "pip", "install", "requests"])
+    
     app.run(host='0.0.0.0', port=5000)

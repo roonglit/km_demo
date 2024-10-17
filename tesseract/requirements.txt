@@ -1,4 +1,5 @@
 flask
-pytesseract
 pdf2image
-Pillow
+pytesseract
+requests
+pillow

@@ -1,0 +1,2 @@
+module Callbacks::BlobsHelper
+end

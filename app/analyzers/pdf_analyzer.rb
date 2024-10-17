@@ -10,11 +10,14 @@ class PdfAnalyzer < ActiveStorage::Analyzer
       reader = PDF::Reader.new(file.path)
       # if result contains no text or only \n characters, it's probably a scanned document
       result = reader.pages.map(&:text).join.gsub("\n", "")
-      # we will send scaned document to tesseract service
+      
       if result.empty?
-        Rails.logger.info "Scanned document detected"
+        # we need to send the document to the OCR service here to save time downloading the file.
+        Rails.logger.info "Send document to OCR service"
         client = TesseractClient.new(ENV['TESSERACT_SERVICE_URL'])
-        result = client.extract_text(file.path)
+        callback_url = Rails.application.routes.url_helpers.pdf_callback_active_storage_blob_url(blob)
+        client.extract_text(file.path, callback_url)
+        return { require_ocr: true }
       end
 
       { text: result }
