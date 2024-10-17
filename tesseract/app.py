@@ -6,6 +6,7 @@ import subprocess
 import logging
 import threading
 import requests
+import uuid
 
 app = Flask(__name__)
 
@@ -82,14 +83,16 @@ def process_pdf_in_background(file_path, callback_url):
         logging.info("PDF to image conversion completed")
 
         extracted_text = ""
+        unique_id = str(uuid.uuid4())
+
         for page_number, page in enumerate(pages, start=1):
             logging.info(f"Processing page {page_number}")
-            # Save the page as an image
-            page_path = f"/tmp/page_{page_number}.png"
+            # Save the page as an image with a unique filename
+            page_path = f"/tmp/{unique_id}_page_{page_number}.png"
             page.save(page_path, 'PNG')
 
             # Preprocess the image using ImageMagick
-            preprocessed_path = f"/tmp/preprocessed_{page_number}.png"
+            preprocessed_path = f"/tmp/{unique_id}_preprocessed_{page_number}.png"
             subprocess.run(["convert", page_path, "-resize", "150%", "-threshold", "50%", preprocessed_path])
             logging.info(f"Preprocessing completed for page {page_number}")
 
@@ -131,7 +134,7 @@ def extract_text():
 
     file = request.files['pdf']
     callback_url = request.form['callback_url']
-    file_path = "/tmp/uploaded.pdf"
+    file_path = f"/tmp/{str(uuid.uuid4())}_uploaded.pdf"
     file.save(file_path)
 
     # Start background job for processing PDF
