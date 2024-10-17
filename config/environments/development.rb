@@ -44,7 +44,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
   # 172.17.0.1 is docker network gateway
-  Rails.application.routes.default_url_options[:host] = "host.docker.internal:3000"
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

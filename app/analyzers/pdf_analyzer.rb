@@ -15,7 +15,8 @@ class PdfAnalyzer < ActiveStorage::Analyzer
         # we need to send the document to the OCR service here to save time downloading the file.
         Rails.logger.info "Send document to OCR service"
         client = TesseractClient.new(ENV['TESSERACT_SERVICE_URL'])
-        callback_url = Rails.application.routes.url_helpers.pdf_callback_active_storage_blob_url(blob)
+
+        callback_url = Rails.application.routes.url_helpers.pdf_callback_active_storage_blob_url(blob, host: ENV["KM_CALLBACK_HOST"])
         client.extract_text(file.path, callback_url)
         return { require_ocr: true }
       end
