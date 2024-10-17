@@ -7,7 +7,7 @@ class PdfAnalyzer < ActiveStorage::Analyzer
 
   def metadata
     download_blob_to_tempfile do |file|
-      result = pdf_reader(file.path)
+      result = pdftotext(file.path)
       
       if result.empty?
         # we need to send the document to the OCR service here to save time downloading the file.
