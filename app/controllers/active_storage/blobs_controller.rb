@@ -18,6 +18,8 @@ module ActiveStorage
           record.run_file_analyzed_callbacks(@blob.metadata)
         end
       end
+
+      head :ok
     end
 
     private
