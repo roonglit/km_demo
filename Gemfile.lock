@@ -272,7 +272,7 @@ GEM
       ttfunk
     pdftotext (0.2.1)
       cliver (~> 0.3)
-    pg (1.5.8)
+    pg (1.5.9)
     pragmatic_segmenter (0.3.24)
     psych (5.1.2)
       stringio
@@ -447,7 +447,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection (~> 1.0)
   pdf-reader (~> 2.12)
   pdftotext (~> 0.2.1)
-  pg (~> 1.1)
+  pg (~> 1.5)
   puma (>= 5.0)
   rails (~> 7.2.1)
   rubocop-rails-omakase
