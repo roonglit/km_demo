@@ -1,8 +1,9 @@
 module Langchain::Tool
   class Knowledge
     extend Langchain::ToolDefinition
+    include Rails.application.routes.url_helpers
 
-    define_function :get_knowledge, description: "return relevent chunks of text related to the query" do 
+    define_function :get_knowledge, description: "return relevent knowledge from the query, including source of the knowledge" do 
       property :query,
         type: "string",
         description: "The query to search for",
@@ -11,7 +12,7 @@ module Langchain::Tool
 
     def get_knowledge(query:)
       content = Content.search(query).first
-      content.search_data
+      { content: content.search_data, link: content_url(content) }
     end
   end
 end
