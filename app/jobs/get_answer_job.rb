@@ -5,8 +5,8 @@ class GetAnswerJob < ApplicationJob
     llm = Langchain::LLM::OpenAI.new(api_key: ENV['OPENAI_API_KEY'])
     assistant = Langchain::Assistant.new(
       llm: llm,
-      instructions: "You have knowledge from our database. Use it to help the user.",
-      tools: [Langchain::Tool::Knowledge.new]
+      instructions: "You have knowledge from our database. It will return an array of them. Use the most relevant one to help the user.",
+      tools: [Langchain::Tool::Knowledge.new(llm)]
     )
 
     # load history from chat

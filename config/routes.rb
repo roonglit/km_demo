@@ -1,8 +1,11 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+
   resources :messages, only: %i[ create show index new ]
   resources :chats
 
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
+  resources :contents, only: %i[ index show ]
+  
   namespace :admin do
     resources :articles
 
