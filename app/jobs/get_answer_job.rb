@@ -2,9 +2,6 @@ class GetAnswerJob < ApplicationJob
   queue_as :default
 
   def perform(chat_id)
-    # Do something later
-    
-
     llm = Langchain::LLM::OpenAI.new(api_key: ENV['OPENAI_API_KEY'])
     assistant = Langchain::Assistant.new(
       llm: llm,
