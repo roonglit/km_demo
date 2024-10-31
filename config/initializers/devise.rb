@@ -309,7 +309,7 @@ Devise.setup do |config|
 
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
-  # config.sign_in_after_change_password = true
+  config.sign_in_after_change_password = true
   config.omniauth :keycloak_openid, ENV['KEYCLOAK_ODDS_CLIENT_ID'], ENV['KEYCLOAK_ODDS_CLIENT_SECRET'], 
     client_options: {
       base_url: '',
@@ -326,7 +326,7 @@ Devise.setup do |config|
   #     base_url: '',
   #     site: 'https://sso2.pea.co.th', 
   #     realm: 'pea-users', 
-  #     redirect_uri: 'http://localhost:3000/callback' 
+  #     redirect_uri: 'http://localhost:3000/users/auth/keycloakopenid/callback' 
   #   },
   #   strategy_class: OmniAuth::Strategies::KeycloakOpenId,
   #   scope: 'openid profile email'

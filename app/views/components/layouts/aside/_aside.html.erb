@@ -17,8 +17,6 @@
     </button>
   <% end %>
   <%= render 'components/layouts/aside/aside_body' do %>
-    <%= nav do %>
-      <%= nav_item icon: 'hero_document_text', text: 'Articles', path: admin_articles_path %>
-    <% end %>
+    <%= yield %>
   <% end %>
 <% end %>

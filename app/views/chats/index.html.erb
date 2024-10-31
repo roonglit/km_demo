@@ -1,0 +1,24 @@
+<div class="flex grow flex-col">
+  <%= content_tag :aside, class: [
+    'fixed bottom-0 top-0 z-30 md:z-20',
+    'flex flex-col',
+    'border-zinc-300/25 bg-zinc-200',
+    'py-6',
+    'border-r',
+    'max-md:w-[20rem] max-md:shadow-2xl',
+    'md:w-[20rem]',
+    'transition-all duration-300',
+    ] do %>
+    <%= link_to "New Chat", new_chat_path, data: {turbo_frame: "chat"} %>
+    <%= turbo_frame_tag 'chats', class: 'flex flex-col' do %>
+      <% @chats.each do |chat| %>
+        <%= render 'topic', chat: chat %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <div class='flex-grow flex flex-col md:pl-[20rem] h-full'>
+    <%= turbo_frame_tag 'chat', class: "w-full h-full" do %>
+      <%= render "form", chat: Chat.new %>
+    <% end %>
+  </div>
+</div>
