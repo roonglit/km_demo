@@ -1,0 +1,2 @@
+<%= turbo_stream.append 'chats', partial: 'chats/topic', locals: { chat: @chat} %>
+<%= turbo_stream.update 'chat', partial: 'chats/chat', locals: { chat: @chat} %>

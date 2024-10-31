@@ -17,21 +17,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <div class="flex grow flex-col" data-controller="admin-layout">
-      <%= render "components/layouts/aside/aside" do %>
-        <%= nav do %>
-          <%= nav_item icon: 'hero_document_text', text: 'Articles', path: admin_articles_path %>
-        <% end %>
-      <% end %>
-      <%= render "components/layouts/wrapper/wrapper" do %>
-        <%= render "components/layouts/header/header" do %>
-          <%= render "components/layouts/header/header_left" %>
-        <% end %>
-        <main>
-          <%= yield %>
-        </main>
-      <% end %>
-    </div>
+  <body class="bg-gradient-to-r from-violet-100 to-violet-200">
+    <%= yield %>
   </body>
 </html>

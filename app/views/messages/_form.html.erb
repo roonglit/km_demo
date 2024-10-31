@@ -1,0 +1,7 @@
+<%= simple_form_for chat.messages.new do |f| %>
+  <%= f.input :chat_id, as: :hidden %>
+  <div class='flex flex-row'>
+    <%= f.input :content, as: :text, label: false, wrapper_html: {class: 'flex-grow mb-0 mr-2'}, input_html: {class: "h-8"} %>
+    <%= f.button :submit, "Send", class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded' %>
+  </div>
+<% end %>

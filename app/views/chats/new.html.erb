@@ -1,0 +1,13 @@
+<% content_for :title, "New chat" %>
+
+<h1>New chat</h1>
+
+<%= turbo_frame_tag "chat" do %>
+  <%= render "form", chat: @chat %>
+<% end %>
+
+<br>
+
+<div>
+  <%= link_to "Back to chats", chats_path %>
+</div>
