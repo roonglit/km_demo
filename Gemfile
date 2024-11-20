@@ -73,7 +73,7 @@ gem "omniauth-rails_csrf_protection", "~> 1.0"
 
 gem "omniauth-keycloak", "~> 1.5"
 
-gem "pdf-reader", "~> 2.12"
+gem "pdf-reader", "~> 2.13"
 gem "image_processing", "~> 1.2"
 gem "httparty", "~> 0.22.0"
 
